@@ -53,7 +53,7 @@ cf push ${NEW_APP_NAME} -d ${DOMAIN} ${CF_PUSH_PARAMS}
 if [ -n "${HEALTH_SEARCH_STRING}" ]; then
   PROTOCOL=${PROTOCOL:="https"}
   NEW_APP_URL=${NEW_APP_NAME}.${DOMAIN}
-  
+
   CHECK_PORT="443"
   if [ "${PROTOCOL}" == "http" ]; then
     CHECK_PORT="80"
@@ -75,5 +75,8 @@ cf delete ${APP_NAME} -f
 
 # Rename new app to current
 cf rename ${NEW_APP_NAME} ${APP_NAME}
+
+# Delete temp route
+cf delete-route ${DOMAIN} --hostname ${NEW_APP_NAME} -f
 
 echo "DONE"
